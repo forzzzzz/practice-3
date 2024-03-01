@@ -2,4 +2,5 @@
 
 ## Скріншоти
 
-![Image alt](https://github.com/{username}/{repository}/raw/{branch}/{path}/image.png)
+![Image alt](screenshots/Screenshot_1.png)
+![Image alt](screenshots/Screenshot_2.png)
