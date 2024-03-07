@@ -22,4 +22,8 @@ public class DirectCurrent {
 
         return result;
     }
+
+    public SomeNewClass createSomeNewClass(String data) {
+        return new SomeNewClass(data);
+    }
 }

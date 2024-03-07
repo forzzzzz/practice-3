@@ -3,7 +3,7 @@ package org.example;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Item2d implements Serializable {
+public class Item2d implements Serializable, Displayable {
     private String binaryCurrent;
     @Serial
     private static final long serialVersionUID = 1L;
@@ -39,10 +39,12 @@ public class Item2d implements Serializable {
             return false;
         Item2d other = (Item2d) obj;
         if (binaryCurrent == null) {
-            if (other.binaryCurrent != null)
-                return false;
-        } else if (!binaryCurrent.equals(other.binaryCurrent))
-            return false;
-        return true;
+            return other.binaryCurrent == null;
+        } else return binaryCurrent.equals(other.binaryCurrent);
+    }
+
+    @Override
+    public void display() {
+        System.out.println("BinaryCurrent: " + binaryCurrent);
     }
 }

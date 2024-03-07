@@ -33,8 +33,7 @@ public class Calc {
         System.out.println(result);
     }
     public void save() throws IOException {
-        ObjectOutputStream os = new ObjectOutputStream(new
-                FileOutputStream(FNAME));
+        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(FNAME));
         os.writeObject(result);
         os.flush();
         os.close();
@@ -44,5 +43,9 @@ public class Calc {
         ObjectInputStream is = new ObjectInputStream(new FileInputStream(FNAME));
         result = (Item2d)is.readObject();
         is.close();
+    }
+
+    public Displayable createDisplayable() {
+        return () -> System.out.println(result);
     }
 }

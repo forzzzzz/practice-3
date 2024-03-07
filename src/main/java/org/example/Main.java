@@ -26,7 +26,8 @@ public class Main {
                     break;
                 case 'v':
                     System.out.println("View current.");
-                    calc.show();
+                    Displayable displayable = calc.createDisplayable();
+                    displayable.display();
                     break;
                 case 'g':
                     System.out.println("Random generation.");
