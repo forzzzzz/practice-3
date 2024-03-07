@@ -85,10 +85,10 @@ public class Item2d implements Serializable, Displayable {
     @Override
     public void display(String format) {
         switch (format){
-            case "String":
+            case "s":
                 display();
                 break;
-            case "Table":
+            case "t":
 
                 System.out.println("BinaryCurrent: " + getBinaryCurrent());
                 System.out.println("+----------------+------------+------------+------------+------------+");

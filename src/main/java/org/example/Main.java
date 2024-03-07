@@ -4,19 +4,20 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Main {
-    private final Calc calc = new Calc();
+    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
     private void menu() {
         String s = null;
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         do {
             do {
                 System.out.println("Enter command...");
-                System.out.print("'q'uit, 'v'iew, 'g'enerate, 's'ave, 'r'estore: ");
+                System.out.print("'q'uit, 'v'iew, 'g'enerate,  's'ave, 'r'estore: ");
                 try {
                     s = in.readLine();
-                } catch(IOException e) {
+                } catch (IOException e) {
                     System.out.println("Error: " + e);
                     System.exit(0);
                 }
@@ -26,44 +27,80 @@ public class Main {
                     System.out.println("Exit.");
                     break;
                 case 'v':
-                    System.out.println("Enter display format (default or table):");
-                    Scanner scanner = new Scanner(System.in);
-                    String format = scanner.nextLine();
-                    System.out.println("View current.");
-                    Displayable displayable = calc.createDisplayable();
-                    displayable.display(format);
+                    if (confirmation()){
+                        System.out.println("Enter display format ('s'tring or 't'able):");
+                        String format = null;
+                        try {
+                            format = in.readLine();
+                        } catch (IOException e) {
+                            System.out.println("Error: " + e);
+                            System.exit(0);
+                        }
+
+                        System.out.println("View current.");
+                        Displayable displayable = Calc.createDisplayable();
+                        displayable.display(format);
+                    }
                     break;
                 case 'g':
-                    System.out.println("Random generation.");
-                    calc.init(Math.random() * 360.0,
-                            Math.random() * 360.0,
-                            Math.random() * 360.0,
-                            Math.random() * 360.0,
-                            Math.random() * 360.0);
-                    calc.show();
+                    if (confirmation()){
+                        System.out.println("Random generation.");
+
+                        // Демонстрація макрокоманди
+                        Calc.initAndShowResult(Math.random() * 360.0,
+                                Math.random() * 360.0,
+                                Math.random() * 360.0,
+                                Math.random() * 360.0,
+                                Math.random() * 360.0);
+                    }
                     break;
                 case 's':
-                    System.out.println("Save current.");
-                    try {
-                        calc.save();
-                    } catch (IOException e) {
-                        System.out.println("Serialization error: " + e);
+                    if (confirmation()){
+                        System.out.println("Save current.");
+                        try {
+                            Calc.save();
+                        } catch (IOException e) {
+                            System.out.println("Serialization error: " + e);
+                        }
+                        Calc.show();
                     }
-                    calc.show();
                     break;
                 case 'r':
-                    System.out.println("Restore last saved.");
-                    try {
-                        calc.restore();
-                    } catch (Exception e) {
-                        System.out.println("Serialization error: " + e);
+                    if (confirmation()){
+                        System.out.println("Restore last saved.");
+                        try {
+                            Calc.restore();
+                        } catch (Exception e) {
+                            System.out.println("Serialization error: " + e);
+                        }
+                        Calc.show();
                     }
-                    calc.show();
                     break;
                 default:
                     System.out.print("Wrong command. ");
             }
-        } while(s.charAt(0) != 'q');
+        } while (s.charAt(0) != 'q');
+    }
+
+    private boolean confirmation(){
+        System.out.println("Confirm action ('y'es or 'n'o)?");
+        String confirm = null;
+        try {
+            confirm = in.readLine();
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+            System.exit(0);
+        }
+        switch (confirm.charAt(0)){
+            case 'y':
+                return true;
+            case 'n':
+                return false;
+            default:
+                System.out.print("Wrong command.");
+        }
+
+        return false;
     }
 
     public static void main(String[] args) {

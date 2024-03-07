@@ -9,61 +9,35 @@ package org.example;
 
 public class MainTest {
     public static void main(String[] args) {
-        testInitAndShow();
+        // Test initAndShowResult
+        System.out.println("Test initAndShowResult:");
+        Calc.initAndShowResult(10.0, 2.0, 3.0, 4.0, 5.0);
 
-        testSaveAndRestore();
-
-        testDisplay();
-    }
-
-    public static void testInitAndShow() {
-        System.out.println("Testing init and show methods:");
-        Calc calc = new Calc();
-        double v = 10.5;
-        double r1 = 2.3;
-        double r2 = 4.7;
-        double r3 = 6.1;
-        double r4 = 8.9;
-        calc.init(v, r1, r2, r3, r4);
-        calc.show();
-        System.out.println();
-    }
-
-    public static void testSaveAndRestore() {
-        System.out.println("Testing save and restore methods:");
-        Calc calc = new Calc();
-        double v = 10.5;
-        double r1 = 2.3;
-        double r2 = 4.7;
-        double r3 = 6.1;
-        double r4 = 8.9;
-        calc.init(v, r1, r2, r3, r4);
+        // Test save and restore
         try {
-            calc.save();
-            calc.restore();
-            calc.show();
+            System.out.println("\nTesting save and restore:");
+            Calc.save();
+            Calc.restore();
+            System.out.println("Restored object:");
+            Calc.show();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-        System.out.println();
-    }
 
-    public static void testDisplay() {
-        System.out.println("Testing display methods:");
-        Calc calc = new Calc();
-        double v = 10.5;
-        double r1 = 2.3;
-        double r2 = 4.7;
-        double r3 = 6.1;
-        double r4 = 8.9;
-        calc.init(v, r1, r2, r3, r4);
+        // Test createDisplayable
+        System.out.println("\nTesting createDisplayable:");
+        Displayable displayable = Calc.createDisplayable();
+        displayable.display("t");
 
-        Displayable displayable = calc.createDisplayable();
-        System.out.println("Displaying in string format:");
-        System.out.println();
-        displayable.display("String");
-        System.out.println("Displaying in table format:");
-        System.out.println();
-        displayable.display("Table");
+        // Test DirectCurrent
+        System.out.println("\nTesting DirectCurrent:");
+        DirectCurrent directCurrent = new DirectCurrent();
+        Item2d result = directCurrent.calculateDirectCurrent(10.0, 2.0, 3.0, 4.0, 5.0);
+        result.display("t");
+
+        // Test SomeNewClass
+        System.out.println("\nTesting SomeNewClass:");
+        SomeNewClass someNewClass = new SomeNewClass("Sample data");
+        someNewClass.display("s");
     }
 }

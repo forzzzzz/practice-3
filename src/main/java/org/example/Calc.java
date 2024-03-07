@@ -9,44 +9,55 @@ import java.io.ObjectOutputStream;
 
 public class Calc {
     private static final String FNAME = "Item2d.bin";
-    private Item2d result;
-    private final DirectCurrent directCurrent;
-    public Calc() {
-        result = new Item2d();
-        directCurrent = new DirectCurrent();
+    private static Item2d result = new Item2d();
+    private static final DirectCurrent directCurrent = new DirectCurrent();
+
+    private Calc() {
+
     }
-    public void setResult(Item2d result) {
-        this.result = result;
+
+    public static void setResult(Item2d result) {
+        Calc.result = result;
     }
-    public Item2d getResult() {
+
+    public static Item2d getResult() {
         return result;
     }
-    private String calc(double v, double r1, double r2, double r3, double r4) {
+
+    private static String calc(double v, double r1, double r2, double r3, double r4) {
         result = directCurrent.calculateDirectCurrent(v, r1, r2, r3, r4);
         return result.getBinaryCurrent();
     }
 
-    public String init(double v, double r1, double r2, double r3, double r4) {
+    public static String init(double v, double r1, double r2, double r3, double r4) {
         result = directCurrent.calculateDirectCurrent(v, r1, r2, r3, r4);
         return result.getBinaryCurrent();
     }
-    public void show() {
+
+    public static void show() {
         System.out.println(result);
     }
-    public void save() throws IOException {
+
+    //Макрокоманда
+    public static void initAndShowResult(double v, double r1, double r2, double r3, double r4){
+        init(v, r1, r2, r3, r4);
+        show();
+    }
+
+    public static void save() throws IOException {
         ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(FNAME));
         os.writeObject(result);
         os.flush();
         os.close();
     }
 
-    public void restore() throws Exception {
+    public static void restore() throws Exception {
         ObjectInputStream is = new ObjectInputStream(new FileInputStream(FNAME));
-        result = (Item2d)is.readObject();
+        result = (Item2d) is.readObject();
         is.close();
     }
 
-    public Displayable createDisplayable() {
+    public static Displayable createDisplayable() {
         return new Displayable() {
             @Override
             public void display(String format) {
