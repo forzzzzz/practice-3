@@ -8,7 +8,7 @@ public class SomeNewClass implements Displayable {
     }
 
     @Override
-    public void display() {
+    public void display(String format) {
         System.out.println("Data: " + data);
     }
 }

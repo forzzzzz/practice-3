@@ -27,7 +27,8 @@ public class Calc {
     }
 
     public String init(double v, double r1, double r2, double r3, double r4) {
-        return result.setBinaryCurrent(calc(v, r1, r2, r3, r4));
+        result = directCurrent.calculateDirectCurrent(v, r1, r2, r3, r4);
+        return result.getBinaryCurrent();
     }
     public void show() {
         System.out.println(result);
@@ -46,6 +47,11 @@ public class Calc {
     }
 
     public Displayable createDisplayable() {
-        return () -> System.out.println(result);
+        return new Displayable() {
+            @Override
+            public void display(String format) {
+                result.display(format);
+            }
+        };
     }
 }

@@ -1,5 +1,5 @@
 package org.example;
 
 interface Displayable {
-    void display();
+    void display(String format);
 }

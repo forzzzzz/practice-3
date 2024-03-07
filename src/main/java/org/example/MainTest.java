@@ -9,46 +9,61 @@ package org.example;
 
 public class MainTest {
     public static void main(String[] args) {
+        testInitAndShow();
+
+        testSaveAndRestore();
+
+        testDisplay();
+    }
+
+    public static void testInitAndShow() {
+        System.out.println("Testing init and show methods:");
         Calc calc = new Calc();
-
-        System.out.println("Testing initialization and display of randomly generated values:");
-        calc.init(Math.random() * 360.0,
-                Math.random() * 360.0,
-                Math.random() * 360.0,
-                Math.random() * 360.0,
-                Math.random() * 360.0);
+        double v = 10.5;
+        double r1 = 2.3;
+        double r2 = 4.7;
+        double r3 = 6.1;
+        double r4 = 8.9;
+        calc.init(v, r1, r2, r3, r4);
         calc.show();
+        System.out.println();
+    }
 
-        System.out.println("\nTesting save and restore functionality:");
+    public static void testSaveAndRestore() {
+        System.out.println("Testing save and restore methods:");
+        Calc calc = new Calc();
+        double v = 10.5;
+        double r1 = 2.3;
+        double r2 = 4.7;
+        double r3 = 6.1;
+        double r4 = 8.9;
+        calc.init(v, r1, r2, r3, r4);
         try {
-            System.out.println("Saving current state...");
             calc.save();
-            System.out.println("Restoring last saved state...");
             calc.restore();
             calc.show();
         } catch (Exception e) {
-            System.out.println("Error occurred: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
+        System.out.println();
+    }
 
-        System.out.println("\nTesting setResult and getResult:");
-        Item2d customItem = new Item2d("1010101010");
-        calc.setResult(customItem);
-        System.out.println("Custom result:");
-        calc.show();
+    public static void testDisplay() {
+        System.out.println("Testing display methods:");
+        Calc calc = new Calc();
+        double v = 10.5;
+        double r1 = 2.3;
+        double r2 = 4.7;
+        double r3 = 6.1;
+        double r4 = 8.9;
+        calc.init(v, r1, r2, r3, r4);
 
-        System.out.println("\nTesting random generation:");
-        calc.init(Math.random() * 360.0,
-                Math.random() * 360.0,
-                Math.random() * 360.0,
-                Math.random() * 360.0,
-                Math.random() * 360.0);
-        calc.show();
-
-        System.out.println("\nTesting creation of Displayable object:");
         Displayable displayable = calc.createDisplayable();
-        displayable.display();
-
-
-        System.out.println("\nTesting completed.");
+        System.out.println("Displaying in string format:");
+        System.out.println();
+        displayable.display("String");
+        System.out.println("Displaying in table format:");
+        System.out.println();
+        displayable.display("Table");
     }
 }

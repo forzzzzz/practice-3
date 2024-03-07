@@ -18,7 +18,7 @@ public class DirectCurrent {
         long bits = Double.doubleToLongBits(totalCurrent);
         String binaryCurrent = Long.toBinaryString(bits);
 
-        result.setBinaryCurrent(binaryCurrent);
+        result.setValues(binaryCurrent, v, r1, r2, r3, r4);
 
         return result;
     }

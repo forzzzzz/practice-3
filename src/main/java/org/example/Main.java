@@ -3,6 +3,7 @@ package org.example;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class Main {
     private final Calc calc = new Calc();
@@ -25,9 +26,12 @@ public class Main {
                     System.out.println("Exit.");
                     break;
                 case 'v':
+                    System.out.println("Enter display format (default or table):");
+                    Scanner scanner = new Scanner(System.in);
+                    String format = scanner.nextLine();
                     System.out.println("View current.");
                     Displayable displayable = calc.createDisplayable();
-                    displayable.display();
+                    displayable.display(format);
                     break;
                 case 'g':
                     System.out.println("Random generation.");
