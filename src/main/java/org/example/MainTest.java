@@ -1,43 +1,44 @@
 package org.example;
 
-
-//import org.junit.jupiter.api.Test;
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.testng.AssertJUnit.fail;
-//
-//import java.io.IOException;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.*;
 
 public class MainTest {
     public static void main(String[] args) {
-        // Test initAndShowResult
-        System.out.println("Test initAndShowResult:");
-        Calc.initAndShowResult(10.0, 2.0, 3.0, 4.0, 5.0);
 
-        // Test save and restore
-        try {
-            System.out.println("\nTesting save and restore:");
-            Calc.save();
-            Calc.restore();
-            System.out.println("Restored object:");
-            Calc.show();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+        BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        for (int i = 0; i < 2; i++) {
+            Worker worker = new Worker(queue);
+            executor.submit(worker);
         }
 
-        // Test createDisplayable
-        System.out.println("\nTesting createDisplayable:");
-        Displayable displayable = Calc.createDisplayable();
-        displayable.display("t");
+        for (int i = 0; i < 4; i++) {
+            final int taskId = i;
+            queue.offer(() -> {
 
-        // Test DirectCurrent
-        System.out.println("\nTesting DirectCurrent:");
-        DirectCurrent directCurrent = new DirectCurrent();
-        Item2d result = directCurrent.calculateDirectCurrent(10.0, 2.0, 3.0, 4.0, 5.0);
-        result.display("t");
+                System.out.println();
+                System.out.println("Task " + taskId + " finished. Queue: " + queue.size());
 
-        // Test SomeNewClass
-        System.out.println("\nTesting SomeNewClass:");
-        SomeNewClass someNewClass = new SomeNewClass("Sample data");
-        someNewClass.display("s");
+                double v = Math.random() * 360.0;
+                double r1 = Math.random() * 360.0;
+                double r2 = Math.random() * 360.0;
+                double r3 = Math.random() * 360.0;
+                double r4 = Math.random() * 360.0;
+
+                Calc.initAndShowResult(v, r1, r2, r3, r4);
+                Calc.showValues();
+            });
+        }
+
+        executor.shutdown();
+        try {
+            executor.awaitTermination(60, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Execution interrupted");
+        }
     }
 }

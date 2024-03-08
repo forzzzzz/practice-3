@@ -1,6 +1,6 @@
 package org.example;
 
-public class SomeNewClass implements Displayable {
+class SomeNewClass implements Displayable {
     private final String data;
 
     public SomeNewClass(String data) {
