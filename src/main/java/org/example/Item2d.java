@@ -2,64 +2,30 @@ package org.example;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Item2d implements Serializable, Displayable {
+public class Item2d implements Serializable {
     private String binaryCurrent;
     private double v;
-    private double r1;
-    private  double r2;
-    private  double r3;
-    private  double r4;
-
-    private List<Double> values;
+    private double r;
     @Serial
     private static final long serialVersionUID = 1L;
 
     public Item2d() {
         binaryCurrent = "0";
         v = 0;
-        r1 = 0;
-        r2 = 0;
-        r3 = 0;
-        r4 = 0;
-
-        this.values = new ArrayList<>();
-        this.values.add(r1);
-        this.values.add(r2);
-        this.values.add(r3);
-        this.values.add(r4);
+        r = 0;
     }
 
-    public Item2d(String binaryCurrent, double v, double r1, double r2, double r3, double r4) {
+    public Item2d(String binaryCurrent, double v, double r) {
         this.v = v;
-        this.r1 = r1;
-        this.r2 = r2;
-        this.r3 = r3;
-        this.r4 = r4;
+        this.r = r;
         this.binaryCurrent = binaryCurrent;
-
-        this.values = new ArrayList<>();
-        this.values.add(r1);
-        this.values.add(r2);
-        this.values.add(r3);
-        this.values.add(r4);
     }
 
-    public void setValues(String binaryCurrent, double v, double r1, double r2, double r3, double r4) {
+    public void setValues(String binaryCurrent, double v, double r) {
         this.v = v;
-        this.r1 = r1;
-        this.r2 = r2;
-        this.r3 = r3;
-        this.r4 = r4;
+        this.r = r;
         this.binaryCurrent = binaryCurrent;
-
-        this.values = new ArrayList<>();
-        this.values.add(r1);
-        this.values.add(r2);
-        this.values.add(r3);
-        this.values.add(r4);
     }
 
     public String getBinaryCurrent() {
@@ -68,26 +34,13 @@ public class Item2d implements Serializable, Displayable {
     public double getV() {
         return v;
     }
-    public double getR1() {
-        return r1;
-    }
-    public double getR2() {
-        return r2;
-    }
-    public double getR3() {
-        return r3;
-    }
-    public double getR4() {
-        return r4;
-    }
-
-    public List<Double> getValues(){
-        return values;
+    public double getR() {
+        return r;
     }
 
     @Override
     public String toString() {
-        return "BinaryCurrent = " + binaryCurrent + "\nV = " + v + "\nR1 = " + r1 + "\nR2 = " + r2 + "\nR3 = " + r3 + "\nR4 = " + r4;
+        return "\nBinaryCurrent = " + binaryCurrent + "\nV = " + v + "\nR = " + r;
     }
 
     @Override
@@ -102,31 +55,5 @@ public class Item2d implements Serializable, Displayable {
         if (binaryCurrent == null) {
             return other.binaryCurrent == null;
         } else return binaryCurrent.equals(other.binaryCurrent);
-    }
-
-    public void display() {
-        System.out.println(this);
-    }
-
-    @Override
-    public void display(String format) {
-        switch (format){
-            case "s":
-                display();
-                break;
-            case "t":
-
-                System.out.println("BinaryCurrent: " + getBinaryCurrent());
-                System.out.println("+----------------+------------+------------+------------+------------+");
-                System.out.println("|        V       |     R1     |     R2     |     R3     |     R4     |");
-                System.out.println("+----------------+------------+------------+------------+------------+");
-                System.out.printf("|%14.1f  |%10.1f  |%10.1f  |%10.1f  |%10.1f  |\n",
-                        getV(), getR1(),
-                        getR2(), getR3(), getR4());
-                System.out.println("+----------------+------------+------------+------------+------------+");
-                break;
-            default:
-                System.out.println("Invalid format!");
-        }
     }
 }

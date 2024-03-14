@@ -1,106 +1,62 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class Main {
-    private final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    private final ExecutorService executor = Executors.newFixedThreadPool(5);
+public class Main extends Application {
+    @Override
+    public void start(Stage primaryStage) {
+        Values values = new Values();
 
-    private void menu() {
-        String s;
-        try {
-            do {
-                do {
-                    System.out.println("Enter command...");
-                    System.out.print("'q'uit, 'v'iew, 'g'enerate,  's'ave, 'r'estore: ");
-                    s = in.readLine();
-                } while (s.length() != 1);
-                switch (s.charAt(0)) {
-                    case 'q':
-                        System.out.println("Выход.");
-                        break;
-                    case 'v':
-                        if (confirmation()) {
-                            System.out.println("Enter display format ('s'tring or 't'able): ");
-                            String format = in.readLine();
-                            System.out.println("View current.");
-                            Displayable displayable = Calc.createDisplayable();
-                            displayable.display(format);
-                            Calc.showValues();
-                        }
-                        break;
-                    case 'g':
-                        if (confirmation()) {
-                            System.out.println("Random generation.");
-                            executor.execute(() -> {
-                                Calc.initAndShowResult(Math.random() * 360.0,
-                                        Math.random() * 360.0,
-                                        Math.random() * 360.0,
-                                        Math.random() * 360.0,
-                                        Math.random() * 360.0);
-                                Calc.showValues();
-                            });
-                        }
-                        break;
-                    case 's':
-                        if (confirmation()) {
-                            System.out.println("Save current.");
-                            executor.execute(() -> {
-                                try {
-                                    Calc.save();
-                                } catch (IOException e) {
-                                    System.out.println("Serialization error: " + e);
-                                }
-                                Calc.show();
-                                Calc.showValues();
-                            });
-                        }
-                        break;
-                    case 'r':
-                        if (confirmation()) {
-                            System.out.println("Restore last saved.");
-                            executor.execute(() -> {
-                                try {
-                                    Calc.restore();
-                                } catch (Exception e) {
-                                    System.out.println("Serialization error: " + e);
-                                }
-                                Calc.show();
-                                Calc.showValues();
-                            });
-                        }
-                        break;
-                    default:
-                        System.out.print("Wrong command. ");
+        values.addObserver(new ConsoleObserver());
+        values.addObserver(new GraphicalObserver());
+
+        Button generateButton = new Button("Generate");
+        generateButton.setOnAction(event -> {
+                double v = Math.random() * 360.0;
+                double r = Math.random() * 360.0;
+
+                Calc.init(v, r);
+                values.setValue(Calc.getResults());
+        });
+
+        Button saveButton = new Button("Save");
+        saveButton.setOnAction(event -> {
+                try {
+                    Calc.save();
+                    values.setValue(Calc.getResults());
+                } catch (Exception e) {
+                    System.out.println("Serialization error: " + e);
                 }
-            } while (s.charAt(0) != 'q');
-        } catch (IOException e) {
-            System.out.println(e);
-        } finally {
-            executor.shutdown();
-        }
-    }
+        });
 
-    private boolean confirmation() throws IOException {
-        System.out.println("Confirm action ('y'es or 'n'o)?");
-        String confirm = in.readLine();
-        switch (confirm.charAt(0)) {
-            case 'y':
-                return true;
-            case 'n':
-                return false;
-            default:
-                System.out.print("Wrong command.");
-                return false;
-        }
+        Button restoreButton = new Button("Restore");
+        restoreButton.setOnAction(event -> {
+                try {
+                    Calc.restore();
+                    values.setValue(Calc.getResults());
+                } catch (Exception e) {
+                    System.out.println("Serialization error: " + e);
+                }
+        });
+
+        Label resultLabel = new Label();
+
+        VBox vBox = new VBox(10);
+        vBox.setPadding(new Insets(10));
+        vBox.getChildren().addAll(generateButton, saveButton, restoreButton, resultLabel);
+
+        Scene scene = new Scene(vBox, 300, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
-        Main main = new Main();
-        main.menu();
+        launch(args);
     }
 }
